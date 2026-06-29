@@ -1,1 +1,0 @@
-Tạo cho tôi bộ giao diện landing page cho Brand BKAP AI, màu chủ đạo xanh dương, phong cách Flat hiện đại. Project tên bkap-ai-landing. Cần các trang index, about, courses, contact. Dùng HTML, CSS, JS, TailwindCSS, jQuery và toastr.js. Tạo trong projects/bkap-ai-landing.
