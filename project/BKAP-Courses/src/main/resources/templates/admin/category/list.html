@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Category</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .status-active { color: green; font-weight: bold; }
+        .status-inactive { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+	<nav style="background:#343a40; padding:10px 20px; margin-bottom:20px;">
+	    <a th:href="@{/admin/category}" 
+	       style="color:#28a745; margin-right:20px; text-decoration:none; font-weight:bold; border-bottom:2px solid #28a745;">
+	       📂 Category
+	    </a>
+	    <a th:href="@{/admin/course}" 
+	       style="color:white; margin-right:20px; text-decoration:none; font-weight:bold;">
+	       📚 Courses
+	    </a>
+	</nav>
+
+    <h1>Danh sách Danh mục khóa học</h1>
+	
+	<a th:href="@{/admin/category/create}" 
+	   style="display:inline-block; margin-bottom:15px; padding:8px 16px; background:#28a745; color:white; text-decoration:none;">
+	   + Thêm Danh mục mới
+	</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Slug</th>
+                <th>Trạng thái</th>
+                <th>Độ ưu tiên</th>
+				<th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.slug}"></td>
+                <td>
+                    <span th:text="${category.status}"
+                          th:class="${category.status == 'active'} ? 'status-active' : 'status-inactive'">
+                    </span>
+                </td>
+                <td th:text="${category.prioty}"></td>
+				
+				<td>
+				    <a th:href="@{/admin/category/edit/{id}(id=${category.id})}">Sửa</a>
+				    |
+				    <a th:href="@{/admin/category/delete/{id}(id=${category.id})}"
+				       onclick="return confirm('Bạn có chắc muốn xóa danh mục này?');"
+				       style="color: red;">Xóa</a>
+				</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

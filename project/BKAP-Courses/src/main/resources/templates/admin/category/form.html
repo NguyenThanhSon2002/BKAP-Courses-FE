@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Category</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 300px; padding: 8px; }
+        button { padding: 8px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        a { margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1 th:text="${category.id} != null ? 'Sửa Danh mục' : 'Thêm Danh mục mới'">Form</h1>
+
+    <form th:action="@{/admin/category/save}" th:object="${category}" method="post">
+		
+		<input type="hidden" th:field="*{id}">
+
+        <div class="form-group">
+            <label>Tên danh mục</label>
+            <input type="text" th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Slug (URL)</label>
+            <input type="text" th:field="*{slug}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Trạng thái</label>
+            <select th:field="*{status}">
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Độ ưu tiên</label>
+            <input type="number" th:field="*{prioty}">
+        </div>
+
+        <button type="submit">Lưu</button>
+        <a th:href="@{/admin/category}">Hủy</a>
+
+    </form>
+
+</body>
+</html>

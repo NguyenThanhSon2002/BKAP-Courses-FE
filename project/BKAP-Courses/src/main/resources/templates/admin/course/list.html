@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Course</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        img { width: 80px; height: 50px; object-fit: cover; }
+        .price-type-FREE { color: green; font-weight: bold; }
+        .price-type-PAID { color: #007bff; font-weight: bold; }
+        .price-type-CONTACT { color: orange; font-weight: bold; }
+        .btn-add {
+            display: inline-block; margin-bottom: 15px; padding: 8px 16px;
+            background: #28a745; color: white; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+	<nav style="background:#343a40; padding:10px 20px; margin-bottom:20px;">
+	    <a th:href="@{/admin/category}" 
+	       style="color:white; margin-right:20px; text-decoration:none; font-weight:bold;">
+	       📂 Category
+	    </a>
+	    <a th:href="@{/admin/course}" 
+	       style="color:#28a745; margin-right:20px; text-decoration:none; font-weight:bold; border-bottom:2px solid #28a745;">
+	       📚 Courses
+	    </a>
+	</nav>
+
+    <h1>Danh sách Khóa học</h1>
+
+    <a th:href="@{/admin/course/create}" class="btn-add">+ Thêm Khóa học mới</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ảnh</th>
+                <th>Tên khóa học</th>
+                <th>Danh mục</th>
+                <th>Giảng viên</th>
+                <th>Cấp độ</th>
+                <th>Giá</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="course : ${courses}">
+                <td th:text="${course.id}"></td>
+                <td><img th:src="${course.thumbnailUrl}" alt="thumbnail"></td>
+                <td th:text="${course.title}"></td>
+                <td th:text="${course.category.name}"></td>
+                <td th:text="${course.instructor.fullname}"></td>
+                <td th:text="${course.level}"></td>
+                <td>
+                    <span th:text="${course.priceType}"
+                          th:class="'price-type-' + ${course.priceType}"></span>
+                    <span th:if="${course.priceType == 'PAID'}"
+                          th:text="${course.price} + 'đ'"></span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/course/edit/{id}(id=${course.id})}">Sửa</a>
+                    |
+                    <a th:href="@{/admin/course/delete/{id}(id=${course.id})}"
+                       onclick="return confirm('Bạn có chắc muốn xóa khóa học này?');"
+                       style="color: red;">Xóa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
