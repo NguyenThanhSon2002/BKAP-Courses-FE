@@ -3,6 +3,7 @@ package com.bkap.CoursesModule.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import com.bkap.CoursesModule.entity.Category;
 
 @Controller
 @RequestMapping("/admin/category")
+@CrossOrigin(origins = "*")
 public class AdminCategoryController {
 
 	@Autowired

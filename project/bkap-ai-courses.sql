@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS Bkap_Courses;
-CREATE DATABASE Bkap_Courses;
-USE Bkap_Courses;
+DROP DATABASE IF EXISTS bkap_courses;
+CREATE DATABASE bkap_courses;
+USE bkap_courses;
 
 -- ------------------------------------------------------------
 -- Bảng 1: User	

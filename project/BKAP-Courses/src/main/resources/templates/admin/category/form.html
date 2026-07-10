@@ -2,52 +2,241 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Thêm Category</title>
+    <title th:text="${category.id} != null ? 'Sửa danh mục' : 'Thêm danh mục mới'">Form</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 300px; padding: 8px; }
-        button { padding: 8px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        a { margin-left: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .page-wrapper {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .page-header { margin-bottom: 24px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .back-link:hover { color: #374151; }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            padding: 32px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            letter-spacing: 0.02em;
+        }
+
+        .required::after {
+            content: ' *';
+            color: #ef4444;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #111827;
+            background: #fafafa;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+            background: white;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Status badge select */
+        select option[value="active"]   { color: #16a34a; }
+        select option[value="inactive"] { color: #dc2626; }
+
+        /* Status indicator */
+        .status-preview {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #16a34a;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .btn-cancel {
+            padding: 10px 20px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-cancel:hover { background: #f9fafb; }
+
+        .btn-save {
+            padding: 10px 24px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-save:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
 
-    <h1 th:text="${category.id} != null ? 'Sửa Danh mục' : 'Thêm Danh mục mới'">Form</h1>
+<div class="page-wrapper">
 
-    <form th:action="@{/admin/category/save}" th:object="${category}" method="post">
-		
-		<input type="hidden" th:field="*{id}">
+    <!-- Header -->
+    <div class="page-header">
+        <a th:href="@{/admin/category}" class="back-link">← Quay lại danh sách</a>
+        <h1 class="page-title"
+            th:text="${category.id} != null ? 'Sửa danh mục' : 'Thêm danh mục mới'">Form</h1>
+        <p class="page-subtitle"
+           th:text="${category.id} != null
+               ? 'Cập nhật thông tin danh mục #' + ${category.id}
+               : 'Điền thông tin để tạo danh mục mới'"></p>
+    </div>
 
-        <div class="form-group">
-            <label>Tên danh mục</label>
-            <input type="text" th:field="*{name}" required>
-        </div>
+    <!-- Card -->
+    <div class="card">
+        <p class="section-title">Thông tin danh mục</p>
 
-        <div class="form-group">
-            <label>Slug (URL)</label>
-            <input type="text" th:field="*{slug}" required>
-        </div>
+        <form th:action="@{/admin/category/save}" th:object="${category}" method="post">
+            <input type="hidden" th:field="*{id}">
 
-        <div class="form-group">
-            <label>Trạng thái</label>
-            <select th:field="*{status}">
-                <option value="active">active</option>
-                <option value="inactive">inactive</option>
-            </select>
-        </div>
+            <div class="form-grid">
 
-        <div class="form-group">
-            <label>Độ ưu tiên</label>
-            <input type="number" th:field="*{prioty}">
-        </div>
+                <div class="form-group full">
+                    <label class="required">Tên danh mục</label>
+                    <input type="text" th:field="*{name}"
+                           placeholder="VD: Frontend Developer" required>
+                </div>
 
-        <button type="submit">Lưu</button>
-        <a th:href="@{/admin/category}">Hủy</a>
+                <div class="form-group full">
+                    <label class="required">Slug (URL)</label>
+                    <input type="text" th:field="*{slug}"
+                           placeholder="VD: frontend-developer" required>
+                    <span class="hint">Dùng cho đường dẫn URL, chỉ dùng chữ thường và dấu gạch ngang</span>
+                </div>
 
-    </form>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select th:field="*{status}">
+                        <option value="active">✅ Active — Hiển thị</option>
+                        <option value="inactive">🔴 Inactive — Ẩn</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Độ ưu tiên</label>
+                    <input type="number" th:field="*{prioty}"
+                           placeholder="VD: 1" min="0">
+                    <span class="hint">Số nhỏ hơn hiển thị trước</span>
+                </div>
+
+            </div>
+
+            <div class="form-footer">
+                <a th:href="@{/admin/category}" class="btn-cancel">Hủy</a>
+                <button type="submit" class="btn-save">💾 Lưu danh mục</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
 
 </body>
 </html>
